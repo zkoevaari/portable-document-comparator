@@ -49,7 +49,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     match args.out_dir.try_exists() {
         Err(e) => return Err(format!("could not check output directory: {}", e.kind()).into()),
         Ok(true) if !args.out_dir.is_dir() => return Err("output is not a directory".into()),
-        Ok(false) | _ => (),
+        Ok(_) => (),
     }
 
     eprint!("Creating output directories if necessary...");
@@ -82,8 +82,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         Err(e) => return Err(format!("could not check output directories: {}", e.kind()).into()),
         Ok(true) => (),
         Ok(false) => {
-            eprintln!("Some output directories are not empty. \
-                We will clear those if we continue.");
+            eprintln!(
+                "Some output directories are not empty. \
+                We will clear those if we continue."
+            );
             let mut res = String::new();
             loop {
                 eprint!("Do you agree? [Y/n] ");
@@ -150,4 +152,3 @@ fn clear_directory(dir: &PathBuf) -> Result<(), Box<dyn Error>> {
     }
     Ok(())
 }
-
