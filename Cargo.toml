@@ -7,3 +7,17 @@ license = "Apache-2.0"
 repository = "https://github.com/zkoevaari/portable-document-comparator.git"
 
 [dependencies]
+
+[dependencies.clap]
+version = "4.5.23"
+default-features = false
+features = [
+    "cargo",
+    "derive",
+    "error-context",
+    "help",
+    "std",
+    "suggestions",
+    "usage",
+    "wrap_help",
+]
