@@ -76,7 +76,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         _ => (),
     }
 
-    eprintln!("Ok.");
+    eprintln!("Done.");
 
     match check_dirs_empty(&left_dir, &right_dir, &diff_dir) {
         Err(e) => return Err(format!("could not check output directories: {}", e.kind()).into()),
@@ -86,23 +86,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                 "Some output directories are not empty. \
                 We will clear those if we continue."
             );
-            let mut res = String::new();
-            loop {
-                eprint!("Do you agree? [Y/n] ");
-                std::io::stderr().flush()?;
-
-                res.clear();
-                std::io::stdin().read_line(&mut res)?;
-                match res.trim() {
-                    "" | "y" | "Y" | "yes" | "Yes" | "YES" => {
-                        break;
-                    }
-                    "n" | "N" | "no" | "No" | "NO" => {
-                        eprintln!("Aborting.");
-                        return Ok(());
-                    }
-                    _ => (),
-                }
+            if !confirm_yes_no("Do you agree?")? {
+                eprintln!("Aborting.");
+                return Ok(());
             }
 
             eprint!("Clearing output directories...");
@@ -112,7 +98,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             clear_directory(&right_dir)?;
             clear_directory(&diff_dir)?;
 
-            eprintln!("Ok.");
+            eprintln!("Done.");
         }
     }
 
